@@ -1,0 +1,121 @@
+﻿@model u23642425_HW02.customer
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded container-md">
+
+
+        <div class="form-horizontal justify-content-md-center">
+            <h4 class="text-md-center">Register</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row form-group mb-4">
+                @Html.LabelFor(model => model.first_name, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.first_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.first_name, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.last_name, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.last_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.last_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                @Html.LabelFor(model => model.street, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.street, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.street, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.zip_code, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.zip_code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.zip_code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                @Html.LabelFor(m => m.customertype_id, new { @class = "control-label col-md-1" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(m => m.customertype_id, (SelectList)ViewBag.CustomerTypes, "Select Type", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.customertype_id, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    @Html.Label("Image", htmlAttributes: new { @class = "control-label" })
+                    <input type="file" name="ImageFile" class="form-control" accept="image/*" onchange="previewImage(event)" />
+
+                    <img id="imagePreview" src="#" alt="Image Preview" style="display:none; height: 100px; width: auto; margin-top: 10px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" />
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<br />
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var preview = document.getElementById('imagePreview');
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            };
+
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+

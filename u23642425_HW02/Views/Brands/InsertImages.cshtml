@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Insert Images";
+}
+
+<h2>Insert Images</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+
+<p>
+    This page triggers the insertion of images into the database based on the `brand_id`.
+</p>
+<br />
+<div>
+    @Html.Raw(ViewBag.Messages)
+</div>

@@ -1,0 +1,177 @@
+﻿@model List<u23642425_HW02.product>
+
+@{
+    ViewBag.Title = "All Products";
+}
+
+<style>
+    .card-body {
+        display: none; /* Hide card body by default */
+    }
+
+    .brand-links a {
+        text-decoration: none;
+        color: inherit; /* Inherit the color from the surrounding text */
+        font-size: 16px;
+        border-bottom: solid;
+        border-bottom-color: white;
+    }
+
+        .brand-links a:hover {
+            transform: scale(1.6); /* Zoom in slightly on hover */
+            border-bottom-color: black;
+        }
+
+    .search-icon {
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .custom-btn {
+        border: none;
+        background: none;
+    }
+</style>
+
+<!-- Search Icon Trigger -->
+<p class="text-center">
+    <button class="btn btn-light custom-btn" type="button" data-bs-toggle="collapse" data-bs-target="#search-section" aria-expanded="false" aria-controls="search-section">
+        <i class="fas fa-search search-icon"></i> <!-- Font Awesome Search Icon -->
+    </button>
+</p>
+<div class="d-flex justify-content-center align-items-center" style="background-color: #f9f9f9; padding: 20px; border-radius: 10px;">
+    <p style="color: #333; font-size: 1.2em; text-align: center;">
+        🌟 Make your dream come true! Choose whatever you want to buy and click on the 🔍 search icon to find your perfect match.
+    </p>
+</div>
+
+<!-- Collapsible Search Form -->
+<div class="collapse" id="search-section">
+    <div class="shadow-sm p-3 mb-5 bg-body-tertiary ">
+        <h4 class="text-md-center">🔍 Search Products 🔍</h4>
+
+        <form method="get" action="/User/Buy">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" name="price" id="price" step="0.01" placeholder="Enter maximum price" />
+                </div>
+
+                <div class="col-md-3">
+                    <label for="brand">Brand</label>
+                    <select class="form-control" name="brand" id="brand">
+                        <option value="">-- Select Brand --</option>
+                        <option value="Electra">Electra</option>
+                        <option value="Haro">Haro</option>
+                        <option value="Heller">Heller</option>
+                        <option value="Pure Cycles">Pure Cycles</option>
+                        <option value="Ritchey">Ritchey</option>
+                        <option value="Strider">Strider</option>
+                        <option value="Sun Bicycles">Sun Bicycles</option>
+                        <option value="Surly">Surly</option>
+                        <option value="Trek">Trek</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="brandCategory">Category</label>
+                    <select class="form-control" name="brandCategory" id="brandCategory">
+                        <option value="">-- Select Category --</option>
+                        <option value="Children Bicycles">Children Bicycles</option>
+                        <option value="Comfort Bicycles">Comfort Bicycles</option>
+                        <option value="Cruisers Bicycles">Cruisers Bicycles</option>
+                        <option value="Cyclocross Bicycles">Cyclocross Bicycles</option>
+                        <option value="Electric Bikes">Electric Bikes</option>
+                        <option value="Mountain Bikes">Mountain Bikes</option>
+                        <option value="Road Bikes">Road Bikes</option>
+
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="storeLocation">Store Location</label>
+                    <select class="form-control" name="storeLocation" id="storeLocation">
+                        <option value="">-- Select Store Location --</option>
+                        <option value="Santa Cruz Bikes">Santa Cruz Bikes</option>
+                        <option value="Baldwin Bikes">Baldwin Bikes</option>
+                        <option value="Rowlett Bikes">Rowlett Bikes</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Display Products Section -->
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @if (product.ImageData != null)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.ImageData)" class="card-img-top" alt="@product.product_name" onclick="toggleCardBody(this)" />
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.jpg" class="card-img-top" alt="No Image Available" onclick="toggleCardBody(this)" />
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@product.product_name</h5>
+                        <p class="card-text">Model Year: @product.model_year</p>
+                        <p class="card-text">List Price: @product.list_price.ToString("C")</p>
+                        <p class="card-text">Category: @product.category.category_name</p>
+
+                        <!-- Product Details Outside Form -->
+                        <div class="product-details">
+                            <p class="card-text">Stock Status: In Stock</p>
+                            <!-- Any other details you want to show -->
+                        </div>
+
+                        <!-- Form for submitting the purchase -->
+                        @using (Html.BeginForm("PurchaseOrder", "User", FormMethod.Post, new { @class = "purchase-form" }))
+                        {
+                            <!-- Hidden field to pass the product ID -->
+                            @Html.Hidden("productid", product.product_id)
+
+                            <!-- Input field for quantity -->
+                            <div class="form-group">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" name="quantity" id="quantity" class="form-control quantity-input" value="1" min="1" max="5" required />
+                            </div>
+
+                            <!-- Submit button for purchasing -->
+                            <button type="submit" class="btn btn-primary">Purchase</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No products found.</p>
+}
+
+<script>
+    function toggleCardBody(imgElement) {
+        var cardBody = imgElement.closest('.card').querySelector('.card-body');
+        if (cardBody.style.display === "none") {
+            cardBody.style.display = "block";
+        } else {
+            cardBody.style.display = "none";
+        }
+    }
+</script>
+

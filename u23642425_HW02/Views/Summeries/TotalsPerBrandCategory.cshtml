@@ -1,0 +1,55 @@
+﻿@model IEnumerable<u23642425_HW02.Models.TotalsPerBrandCategory>
+
+
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+            <h4>Summaries</h4>
+            <ul class="list-unstyled">
+                <li><a href="@Url.Action("NewStocks", "Summeries")" class="normal-link">New stocks</a></li>
+                <li><a href="@Url.Action("ListedForSale", "Summeries")" class="normal-link">Listed for sale</a></li>
+                <li><a href="@Url.Action("TotalSold", "Summeries")" class="normal-link">Total sold</a></li>
+                <li><a href="@Url.Action("SalesPerBrand", "Summeries")" class="normal-link">Sales per brand</a></li>
+                <li><a href="@Url.Action("ListingsPerBrand", "Summeries")" class="normal-link">Listings total</a></li>
+                <li><a href="@Url.Action("AverageSalePerBrand", "Summeries")" class="normal-link">Average sales per brand</a></li>
+                <li><a href="@Url.Action("TotalsPerBrandCategory", "Summeries")" class="normal-link">Totals per brand</a></li>
+                <li><a href="@Url.Action("TotalsPerStore", "Summeries")" class="normal-link">Totals by stores</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Totals Per Brand Category</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Category</th>
+                    <th>Total Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Brand</td>
+                        <td>@item.Category</td>
+                        <td>@item.TotalCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add this CSS in the <head> section or a CSS file -->
+<style>
+    .normal-link {
+        text-decoration: none;
+        color: inherit; /* Inherit the color from the surrounding text */
+    }
+
+        .normal-link:hover {
+            text-decoration: underline; /* Optional: Adds underline on hover to indicate it’s a link */
+        }
+</style>

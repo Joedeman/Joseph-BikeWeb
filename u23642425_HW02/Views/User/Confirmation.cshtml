@@ -1,0 +1,78 @@
+﻿@model u23642425_HW02.Models.OrderConfirmationView
+
+<!-- Page Wrapper with Light Grey Background -->
+<div style="background-color: #f2f2f2; padding: 20px; min-height: 100vh;">
+
+    <!-- Container for the Invoice -->
+    <div style="background-color: white; width: 80%; margin: 0 auto; padding: 30px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+
+        <!-- Header -->
+        <div style="text-align: center;">
+            <h1 style="font-family: 'Trebuchet MS', sans-serif;">@Model.StoreDetails.StoreName</h1>
+            <p>@Model.StoreDetails.Street, @Model.StoreDetails.City, @Model.StoreDetails.State, @Model.StoreDetails.ZipCode</p>
+            <p>Tel: @Model.StoreDetails.Phone | Email: @Model.StoreDetails.Email</p>
+        </div>
+
+        <hr />
+
+        <!-- Invoice Information -->
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <h2>Quote/Invoice</h2>
+                <p>Invoice Number (Order Number): @Model.OrderId</p>
+                <p>Invoice Date: @Model.OrderDate.ToString("dd MMM yyyy")</p>
+            </div>
+            <div style="text-align: right;">
+                <h2>Total Amount</h2>
+                <p>@Model.TotalAmount.ToString("C")</p>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Customer Information -->
+        <h3>Billed To:</h3>
+        <p>Name: @Model.CustomerName</p>
+        <p>Surname: @Model.Surnamee</p>
+
+        <hr />
+
+        <!-- Order Summary -->
+        <h3>Billing Summary</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border-bottom: 1px solid #000;">Item</th>
+                    <th style="border-bottom: 1px solid #000;">Quantity</th>
+                    <th style="border-bottom: 1px solid #000;">Price</th>
+                    <th style="border-bottom: 1px solid #000;">Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td style="border-bottom: 1px solid #ddd;">@item.ProductName</td>
+                        <td style="border-bottom: 1px solid #ddd;">@item.Quantity</td>
+                        <td style="border-bottom: 1px solid #ddd;">@item.ListPrice.ToString("C")</td>
+                        <td style="border-bottom: 1px solid #ddd;">@item.Discount.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Total Amount Section -->
+        <div style="text-align: right;">
+            <h3>Total: @Model.TotalAmount.ToString("C")</h3>
+        </div>
+
+        <!-- Footer -->
+        <p style="font-size: small;">Thank you for your order! For questions about your invoice, please contact us at @Model.StoreDetails.Phone or @Model.StoreDetails.Email</p>
+
+    </div>
+    <!-- Buttons Outside the Container -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary" style="margin-right: 10px;">Return Home</a>
+        <a href="@Url.Action("Buy", "User")" class="btn btn-success">Continue Buying</a>
+    </div>
+</div>

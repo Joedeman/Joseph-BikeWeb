@@ -1,0 +1,92 @@
+﻿@model List<u23642425_HW02.product>
+
+@{
+    ViewBag.Title = "Search Products by Price";
+}
+<style>
+    .card-body {
+        display: none; /* Hide card body by default */
+    }
+</style>
+
+<h2 class="text-center mb-4">Search Products by Price</h2>
+
+<div class="container">
+    <!-- Search Form Section -->
+    
+            <form method="get" action="@Url.Action("PriceSearch", "Brands")" class="p-4 border rounded shadow-sm">
+                <div class="container text-center shadow-sm">
+                    <div class="row align-items-start">
+                        <!-- Minimum Price -->
+                        <div class="col">
+                            <label for="minPrice">Minimum Price</label>
+                            <input type="number" class="form-control" id="minPrice" name="minPrice" value="@ViewBag.MinPrice" placeholder="Enter minimum price" />
+                        </div>
+
+                        <!-- Maximum Price -->
+                        <div class="col">
+                            <label for="maxPrice">Maximum Price</label>
+                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="@ViewBag.MaxPrice" placeholder="Enter maximum price" />
+                        </div>
+
+                        <!-- Search Button -->
+                        <div class="col">
+                            <button type="submit" class="btn btn-info mt-4">Search</button>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </form>
+    <br />
+
+    <!-- Display Filtered Products -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        @if (product.ImageData != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.ImageData)"
+                                 class="card-img-top" alt="@product.product_name"
+                                 onclick="toggleCardBody(this)" />
+                        }
+                        else
+                        {
+                            <img src="~/images/no-image.jpg" class="card-img-top" alt="No Image Available"
+                                 onclick="toggleCardBody(this)" />
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">@product.product_name</h5>
+                            <p class="card-text">Model Year: @product.model_year</p>
+                            <p class="card-text">List Price: @product.list_price.ToString("C")</p>
+                            <p class="card-text">Category: @product.category.category_name</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No products found in the selected price range.</p>
+    }
+</div>
+
+<script>
+    function toggleCardBody(img) {
+        // Find the closest card and its card body
+        var card = img.closest('.card');
+        var cardBody = card.querySelector('.card-body');
+
+        // Toggle the display property of the card body
+        if (cardBody.style.display === "none" || cardBody.style.display === "") {
+            cardBody.style.display = "block"; // Show the card body
+        } else {
+            cardBody.style.display = "none"; // Hide the card body
+        }
+    }
+</script>

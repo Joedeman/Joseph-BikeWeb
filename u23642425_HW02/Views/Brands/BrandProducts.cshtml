@@ -1,0 +1,68 @@
+﻿@model List<u23642425_HW02.Models.Products>
+
+@{
+    ViewBag.Title = "BrandProducts";
+}
+
+<style>
+    .card-body {
+        display: none; /* Hide card body by default */
+    }
+</style>
+
+<h2 class="text-md-center">Products</h2>
+<h2>@ViewBag.Message</h2>
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.ImageData)" class="card-img-top" alt="Product Image" onclick="toggleCardBody(this)" />
+                <div class="card-body">
+                    <h5 class="card-title">@product.ProductName</h5>
+                    <p class="card-text">Model Year: @product.ModelYear</p>
+                    <p class="card-text">List Price: @product.ListPrice.ToString("C")</p>
+                    <p class="card-text">Category ID: @product.CategoryID</p>
+                </div>
+            </div>
+        </div>
+    }
+  
+</div>
+
+<!-- Scroll to Top Button -->
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Go to top">↑</button>
+
+
+<script>
+    function toggleCardBody(img) {
+        // Find the closest card and its card body
+        var cardBody = img.nextElementSibling;
+
+        // Toggle the display property of the card body
+        if (cardBody.style.display === "none" || cardBody.style.display === "") {
+            cardBody.style.display = "block"; // Show the card body
+        } else {
+            cardBody.style.display = "none"; // Hide the card body
+        }
+    }
+</script>
+
+<script>
+    // Show the button when the user scrolls down 20px from the top of the page
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        var scrollTopBtn = document.getElementById("scrollTopBtn");
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollTopBtn.style.display = "block"; // Show the button
+        } else {
+            scrollTopBtn.style.display = "none"; // Hide the button
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to the top
+    }
+</script>

@@ -1,0 +1,96 @@
+﻿@model u23642425_HW02.product
+
+<h2>@ViewBag.ErrorMessage</h2>
+
+@using (Html.BeginForm("Sell", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-horizontal shadow p-4 mb-5 bg-body-tertiary rounded">
+        <div class="d-flex flex-column align-items-center text-center">
+            <h3>🚴 Sell Your Bike Today! 🚴</h3>
+            <p><strong>Ready to find a new home for your bike?</strong></p>
+            <p>📸 <strong>Upload an image</strong> and provide the <strong>details</strong> below to get started!</p>
+        </div>
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("customer_id", Session["CustomerId"])
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <!-- Product Name Field -->
+                <div class="form-group mb-3">
+                    @Html.Label("Product Name", htmlAttributes: new { @class = "control-label" })
+                    @Html.Editor("productName", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessage("productName", "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Brand Dropdown -->
+                <div class="form-group mb-3">
+                    @Html.Label("Brand", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("brandId", (IEnumerable<SelectListItem>)ViewBag.BrandList, "-- Select Brand --", new { @class = "form-control" })
+                    @Html.ValidationMessage("brandId", "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="form-group mb-3">
+                    @Html.Label("Category", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("categoryId", (IEnumerable<SelectListItem>)ViewBag.CategoryList, "-- Select Category --", new { @class = "form-control" })
+                    @Html.ValidationMessage("categoryId", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <!-- Model Year Field -->
+                <div class="form-group mb-3">
+                    @Html.Label("Model Year", htmlAttributes: new { @class = "control-label" })
+                    @Html.Editor("modelYear", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessage("modelYear", "", new { @class = "text-danger" })
+                </div>
+
+                <!-- List Price Field -->
+                <div class="form-group mb-3">
+                    @Html.Label("List Price", htmlAttributes: new { @class = "control-label" })
+                    @Html.Editor("listPrice", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessage("listPrice", "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group mb-3">
+                    @Html.Label("Image", htmlAttributes: new { @class = "control-label" })
+                    <input type="file" name="ImageFile" class="form-control" />
+                    <span id="fileSizeError" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group mt-3">
+            <div class="col-md-12 text-center">
+                <input type="submit" value="Sell My Bike" class="btn btn-info" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        document.getElementById('submitBtn').addEventListener('click', function (e) {
+            var fileInput = document.getElementById('imageFile');
+            var maxSize = 2 * 1024 * 1024; // 2 MB
+
+            if (fileInput.files.length > 0) {
+                var fileSize = fileInput.files[0].size;
+
+                if (fileSize > maxSize) {
+                    e.preventDefault();
+                    document.getElementById('fileSizeError').innerText = 'File size exceeds 2 MB limit.';
+                } else {
+                    document.getElementById('fileSizeError').innerText = '';
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<u23642425_HW02.product>
+
+<div class="d-flex flex-column align-items-center text-center">
+    <h2>🚴‍♂️ Your Bikes, Our Journey 🌟</h2>
+    <p>
+        🌍 Explore the list of all bicycles you've sold or bought. 🛒🚲
+    </p>
+</div>
+
+
+@{
+    // Retrieve the current user's customer ID from session
+    int customerId = Convert.ToInt32(Session["CustomerId"]);
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            var isSeller = product.customer_id == customerId;
+            var isBuyer = false; // Placeholder: You could track buyer status if the logic is extended
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @if (product.ImageData != null)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.ImageData)" class="card-img-top" alt="@product.product_name" onclick="toggleCardBody(this)" />
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.jpg" class="card-img-top" alt="No Image Available" />
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@product.product_name</h5>
+                        <p class="card-text">Model Year: @product.model_year</p>
+
+                        <!-- Safeguard List Price -->
+                        <p class="card-text">List Price: @(product.list_price != null ? product.list_price.ToString("C") : "N/A")</p>
+
+                        <!-- Safeguard Category -->
+                        <p class="card-text">Category: @(product.category != null ? product.category.category_name : "No Category")</p>
+
+                        <!-- Show whether the product was bought or sold -->
+                        <p class="card-text">
+                            @if (isSeller)
+                            {
+                                <strong>Sold</strong>
+                            }
+                            else
+                            {
+                                <strong>Purchased</strong>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No products found.</p>
+}
+<script>
+    function toggleCardBody(imgElement) {
+        var cardBody = imgElement.closest('.card').querySelector('.card-body');
+        cardBody.style.display = cardBody.style.display === "none" ? "block" : "none";
+    }
+</script>

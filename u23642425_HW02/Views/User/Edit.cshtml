@@ -1,0 +1,87 @@
+﻿@model u23642425_HW02.product
+@Html.AntiForgeryToken()
+
+<div class="container-fluid d-flex justify-content-center align-items-center shadow p-4 mb-5 bg-body-tertiary rounded">
+    <div class="d-flex flex-column align-items-center text-center">
+        <h3>🔧 Edit Your Bike Details 🔧</h3>
+        <p><strong>Make changes to your bike's information below.</strong></p>
+    </div>
+  
+
+    @using (Html.BeginForm("Edit", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.product_id)
+
+        <div class="form-horizontal w-75">
+            <!-- Set width to center the form -->
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row mb-3">
+                <!-- Row for left fields -->
+                <!-- Product Name Field -->
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.product_name, "Product Name", htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.product_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.product_name, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Brand Dropdown -->
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.brand_id, "Brand", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.brand_id, (SelectList)ViewBag.BrandList, "-- Select Brand --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.brand_id, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.category_id, "Category", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.category_id, (SelectList)ViewBag.CategoryList, "-- Select Category --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Row for right fields -->
+                <!-- Model Year Field -->
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.model_year, "Model Year", htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.model_year, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.model_year, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- List Price Field -->
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.list_price, "List Price", htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.list_price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.list_price, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="col-md-4">
+                    @Html.Label("Image", htmlAttributes: new { @class = "control-label" })
+                    <input type="file" name="ImageFile" class="form-control" id="imageFile" />
+                    <span id="fileSizeError" class="text-danger"></span>
+
+                    <!-- Display existing image (optional) -->
+                    @if (Model.ImageData != null && Model.ImageData.Length > 0)
+                    {
+                        <div>
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImageData)" alt="Product Image" width="150" height="150" />
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group row mb-3">
+                <div class="col-md-8 offset-md-4">
+                    <!-- Center the button -->
+                    <input type="submit" value="Save" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

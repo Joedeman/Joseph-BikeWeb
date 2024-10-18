@@ -1,0 +1,41 @@
+﻿@model IEnumerable<u23642425_HW02.order>
+
+<h2 class="text-md-center ">Buyers</h2>
+<p class="text-md-center ">All buyers (customers) who have bought bicycles on Bicycles-Hub</p>
+<br />
+
+<form method="get" action="@Url.Action("Buyer", "Home")">
+    <label for="storeLocation">Store Location:</label>
+    <input type="text" name="storeLocation" value="@Request.QueryString["storeLocation"]" />
+
+    <label for="orderDate">Order Date:</label>
+    <input type="date" name="orderDate" value="@Request.QueryString["orderDate"]" />
+
+    <button type="submit" class="btn btn-info">Filter</button>
+</form>
+<hr />
+<table class="table table-light table-striped shadow-sm">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Store Location</th>
+            <th>Order Date</th>
+            <th>Staff</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var buyer in Model)
+        {
+            <tr>
+                <td>@buyer.customer.first_name</td>
+                <td>@buyer.customer.last_name</td>
+                <td>@buyer.store.store_name</td>
+                <td>@buyer.order_date.ToShortDateString()</td>
+                <td>@buyer.staff.last_name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

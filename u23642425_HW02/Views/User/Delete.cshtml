@@ -1,0 +1,19 @@
+﻿@model u23642425_HW02.product
+
+@using (Html.BeginForm("Delete", "User", FormMethod.Post))
+{
+    @Html.AntiForgeryToken() <!-- Add this line -->
+
+    <div class="form-horizontal">
+        <h4>Are you sure you want to delete this product?</h4>
+        <hr />
+        <div>
+            @Html.DisplayFor(model => model.product_name)
+        </div>
+        <div>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+}
+

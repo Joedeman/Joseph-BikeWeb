@@ -1,0 +1,55 @@
+﻿@model IEnumerable<u23642425_HW02.order>
+
+<h2 class="text-md-center">Sellers</h2>
+<p class="text-md-center">All sellers (customers) who have listed bicycles for sale</p>
+<br />
+
+<form method="get" action="@Url.Action("Seller", "Home")">
+    <label for="storeLocation">Store Location:</label>
+    <input type="text" name="storeLocation" value="@Request.QueryString["storeLocation"]" />
+
+    <label for="orderDate">Order Date:</label>
+    <input type="date" name="orderDate" value="@Request.QueryString["orderDate"]" />
+
+    <button type="submit" class="btn btn-info">Filter</button>
+</form>
+<hr />
+<table class="table table-light table-striped shadow-sm">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Store Location</th>
+            <th>Order Date</th>
+            <th>Staff</th>
+            <th>Product (South Africa Only)</th> 
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var seller in Model)
+        {
+            <tr>
+                <td>@seller.customer.first_name</td>
+                <td>@seller.customer.last_name</td>
+                <td>@seller.store.store_name</td>
+                <td>@seller.order_date.ToShortDateString()</td>
+                <td>@seller.staff.last_name</td>
+
+                <!-- Display products if store is Rowlett Bikes and order_items has products -->
+                @if (seller.store.store_name == "Rowlett Bikes" && seller.order_items.Any())
+                {
+                    <td>
+                        @foreach (var item in seller.order_items)
+                        {
+                            <p>@item.product.product_name :::(Quantity: @item.quantity, Price: @item.list_price)</p>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td>N/A</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
